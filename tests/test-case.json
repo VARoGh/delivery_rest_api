@@ -1,0 +1,12 @@
+{
+    "order_datetime": "2025-03-13 20:27:00",
+    "items_count": 2,
+    "distance_km": 3.5,
+    "precip_mm": 2.5,
+    "prep_time_avg": 5.7,
+    "base_speed_kmh": 55,
+    "vehicle_type": "car",
+    "traffic_level": 4,
+    "is_fast_food": 1,
+    "is_express_delivery": 0
+}
