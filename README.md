@@ -3,7 +3,7 @@
 Пример реализации подхода **Model as a Service (MaaS)** для задач машинного обучения.
 Проект демонстрирует, как обученную ML-модель обернуть в REST API с использованием **FastAPI**.
 
-Модель принимает признаки ириса и возвращает предсказанный класс.
+Модель принимает параметры доставки и возвращает предсказанное время доставки.
 
 ---
 
@@ -19,9 +19,7 @@ SIM-DS-MODEL-AS-A-SERVICE/
 │   ├── __init__.py
 │   ├── app.py                # FastAPI-приложение (entrypoint)
 │   ├── inference.py          # Загрузка модели и инференс
-│   ├── pipeline.py           # Обучение и сохранение модели
-│   ├── preprocessing.py      # Препроцессинг данных
-│   └── train.py              # Логика обучения модели
+│   └── preprocessing.py      # Препроцессинг данных
 │
 ├── tests/                    # (опционально) тесты
 ├── requirements.txt
@@ -35,10 +33,8 @@ SIM-DS-MODEL-AS-A-SERVICE/
 
 **Pipeline:**
 
-1. `pipeline.py` — запуск обучения
-2. `train.py` — обучение модели
-3. `preprocessing.py` — подготовка данных
-4. `model.joblib` — сохранённая модель
+1. `preprocessing.py` — подготовка данных
+2. `model.joblib` — сохранённая модель
 
 **Inference / API:**
 
@@ -52,7 +48,7 @@ SIM-DS-MODEL-AS-A-SERVICE/
 ### 1️⃣ Клонирование репозитория
 
 ```bash
-git clone https://github.com/totiela/sim-ds-model-as-a-service
+git clone https://github.com/VARoGh/delivery_rest_api.git
 ```
 
 ---
@@ -91,22 +87,6 @@ pip install -r requirements.txt
 
 ---
 
-## 🏋️ Обучение модели
-
-Перед запуском API необходимо обучить модель:
-
-```bash
-python -m src.pipeline
-```
-
-После этого файл модели сохранится в:
-
-```text
-models/model.joblib
-```
-
----
-
 ## 🚀 Запуск FastAPI
 
 ```bash
@@ -139,10 +119,16 @@ FastAPI автоматически генерирует документацию
 
 ```json
 {
-  "sepal_length": 5.1,
-  "sepal_width": 3.5,
-  "petal_length": 1.4,
-  "petal_width": 0.2
+    "order_datetime": "2025-03-13 20:27:00",
+    "items_count": 2,
+    "distance_km": 3.5,
+    "precip_mm": 2.5,
+    "prep_time_avg": 5.7,
+    "base_speed_kmh": 55,
+    "vehicle_type": "car",
+    "traffic_level": 4,
+    "is_fast_food": 1,
+    "is_express_delivery": 0
 }
 ```
 
@@ -150,7 +136,7 @@ FastAPI автоматически генерирует документацию
 
 ```json
 {
-  "predicted_class": "setosa"
+  "predicted": 58.5
 }
 ```
 
@@ -158,7 +144,7 @@ FastAPI автоматически генерирует документацию
 
 ## 🧩 Используемые технологии
 
-* Python 3.10+
+* Python 3.12+
 * FastAPI
 * Pydantic
 * Scikit-learn
@@ -174,7 +160,5 @@ FastAPI автоматически генерирует документацию
 Проект демонстрирует:
 
 * деплой ML-модели как сервиса
-* разделение обучения и инференса
 * best practices структуры ML-проекта
 * работу с FastAPI и Swagger
-

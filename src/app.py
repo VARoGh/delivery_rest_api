@@ -11,6 +11,7 @@ Description:
 """
 
 import os
+from pathlib import Path
 
 # FastAPI — фреймворк для создания REST API
 from fastapi import FastAPI, HTTPException
@@ -73,10 +74,11 @@ class DeliveryPrediction(BaseModel):
 logger.info("Loading model")
 
 # Путь до сохранённой модели
-MODEL_PATH = os.path.join("models", "model_cbr_delivery.pkl")
+BASE_PATH = Path.cwd()                                              # Базовая директория проекта    # Path.cwd().parent
+MODEL_PATH = BASE_PATH / "models" / "model_cbr_delivery.pkl"        # Директория для моделей и конфигураций
+# MODEL_PATH = os.path.join("models", "model_cbr_delivery.pkl")
 
-# Загружаем модель один раз при старте приложения,
-# а не при каждом запросе (важно для производительности)
+# Загружаем модель один раз при старте приложения
 MODEL = load_model(MODEL_PATH)
 
 logger.info("Model loaded successfully")
@@ -98,7 +100,7 @@ def health_check():
 
 
 # @app.post указывает, что это endpoint для обработки POST-запросов
-# POST обычно используется для отправки данных на сервер (как в нашем случае - признаков для предсказания)
+# POST обычно используется для отправки данных на сервер (в нашем случае - признаков для предсказания)
 # response_model=DeliveryPrediction - указывает FastAPI на формат выходных данных
 # Это обеспечивает автоматическую валидацию и документацию в Swagger
 @app.post("/predict", response_model=DeliveryPrediction)
@@ -131,7 +133,8 @@ def get_prediction(features: DeliveryFeatures):
             raise
 
         # Получаем предсказание модели
-        print(MODEL)
+        feature = MODEL.feature_names_
+        data = data[feature]
         predicted = predict(MODEL, data)
 
         logger.info(f"Predicted = {predicted}" )
